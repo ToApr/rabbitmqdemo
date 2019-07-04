@@ -91,11 +91,12 @@ namespace OrderPublisher
                 IBasicProperties baseProperties= model.CreateBasicProperties();
                 baseProperties.DeliveryMode = 2;  //1 非持久 2持久
                 baseProperties.ContentType = "application/json"; //消息体协议
+               // baseProperties.Expiration = "2000"; //消息失效时间,毫秒
                 model.ConfirmSelect();      //启用发布者确认模式，确保消息投递到host
                 model.BasicPublish(exchange: exchangeName, 
                     routingKey: "",
                     mandatory: false, 
-                    basicProperties: null,
+                    basicProperties: baseProperties,
                     body: messageBodyBytes);
                 bool confim= model.WaitForConfirms();  //同步
                 Console.WriteLine("消息投递到HOST:" + confim);
