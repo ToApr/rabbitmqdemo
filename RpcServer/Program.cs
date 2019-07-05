@@ -79,9 +79,7 @@ namespace RpcServer
 
         static int fit(int n)
         {
-            if(n == 0) return 0;
-            if(n == 1) return 1;
-            return fit(n - 1) + fit(n - 2);
+            return n = n + 2;
         }
     }
 }
