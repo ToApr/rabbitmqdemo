@@ -30,6 +30,7 @@ namespace RpcClient
             connectionFactory.UserName = "hw";
             connectionFactory.Password = "hw";
             connectionFactory.AutomaticRecoveryEnabled = true;
+            connectionFactory.NetworkRecoveryInterval = TimeSpan.FromSeconds(5);
 
             connection = connectionFactory.CreateConnection("rpcclient");
             channel = connection.CreateModel();

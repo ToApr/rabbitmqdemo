@@ -20,7 +20,8 @@ namespace RpcServer
             connectionFactory.VirtualHost = "/";
             connectionFactory.UserName = "hw";
             connectionFactory.Password = "hw";
-            connectionFactory.AutomaticRecoveryEnabled = true;
+            connectionFactory.AutomaticRecoveryEnabled = true;                  
+            connectionFactory.NetworkRecoveryInterval = TimeSpan.FromSeconds(5);
 
             IConnection connection = connectionFactory.CreateConnection("RpcServer"); //创建连接 
 

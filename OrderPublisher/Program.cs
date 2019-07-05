@@ -27,6 +27,10 @@ namespace OrderPublisher
             connectionFactory.Password = "hw";
             connectionFactory.AutomaticRecoveryEnabled = true;
 
+            try
+            {
+
+          
             IConnection connection = connectionFactory.CreateConnection("OrderPublisher"); //创建连接 
 
             IModel model = connection.CreateModel(); //创建通道 channels
@@ -107,6 +111,12 @@ namespace OrderPublisher
             //5.关闭连接
             model.Close();
             connection.Close();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
       
