@@ -26,6 +26,8 @@ namespace OrderPublisher
             connectionFactory.UserName = "hw";
             connectionFactory.Password = "hw";
             connectionFactory.AutomaticRecoveryEnabled = true;
+            connectionFactory.RequestedHeartbeat = 10;
+            
 
             try
             {
@@ -35,28 +37,78 @@ namespace OrderPublisher
 
             IModel model = connection.CreateModel(); //创建通道 channels
 
-            string exchangeName = "Order_Exchange";
-            List<string> queueNameList = new List<string>() { "Phone_Order_NoticeQueue", "Email_Order_NoticeQueue", "WX_Order_NoticeQueue" };
-            //2.创建交换机
-             model.ExchangeDeclare(exchange:exchangeName,  //交换机名称
+               string exchangeName = "Order_Exchange";
+                
+            List<string> queueNameList = new List<string>() { "Phone_Order_NoticeQueue", "Email_Order_NoticeQueue", "WX_Order_NoticeQueue","order_Notice" };
+                #region 事件
+                //connection.ConnectionShutdown += (object sender, ShutdownEventArgs e) => {
+
+                //    Console.WriteLine(e.ReplyText);
+                //};
+                //model.ModelShutdown += (object sender, ShutdownEventArgs e) => {
+                //    Console.WriteLine(e.ReplyText);
+                //};
+                #endregion
+                //2.创建交换机
+                model.ExchangeDeclare(exchange:exchangeName,  //交换机名称
                 type: ExchangeType.Fanout,                //交换机类型  扇出
                 durable: true,                            //持久化的
                 autoDelete: false,                        //自动删除
                 arguments: null);                         //附加参数  ，例如 备用交换机，死信交换机 关联
-       
-            foreach (string queuename in queueNameList)
-            {
-                model.QueueDeclare(queue: queuename, 
+
+                #region 死信队列. + TTL=延迟队列  例如订单到期自动签收
+                string deadLetterExchangeName = "order_dead_letter_exchange";
+                string deadletterQueueName = "order_dead_letter_queue";
+                //1.创建死信交换机
+                model.ExchangeDeclare(exchange: deadLetterExchangeName,  //交换机名称
+                   type: ExchangeType.Fanout,                //交换机类型  扇出
+                   durable: true,                            //持久化的
+                   autoDelete: false,                        //自动删除
+                   arguments: null);                         //附加参数  ，例如 备用交换机，死信交换机 关联
+                model.QueueDeclare(queue: deadletterQueueName, 
                     durable: true, 
-                    exclusive: false,           //队列是否是排他的
-                    autoDelete: false,
+                    exclusive: false, 
+                    autoDelete: false, 
                     arguments: null);
-                  //3队列和交换机绑定
-                   model.QueueBind(queue: queuename, 
-                                exchange:  exchangeName,
-                                routingKey: "", 
-                                arguments: null);   //
-            }
+
+                model.QueueBind(queue: deadletterQueueName,
+                    exchange: deadLetterExchangeName,
+                    routingKey: "", arguments: null);
+
+                Dictionary<string, object> queueArgs = new Dictionary<string, object>();
+                queueArgs.Add("x-message-ttl", 2000);
+                queueArgs.Add("x-dead-letter-exchange", deadLetterExchangeName);
+                //queueArgs.Add("x-queue-mode", "lazy");  //lazy  default 惰性队列
+                #endregion
+
+                foreach (string queuename in queueNameList)
+            {
+                    //if (queuename == "order_Notice")  //这个队列有消息的过期时间
+                    //{
+                    //    model.QueueDeclare(queue: queuename,
+                    //     durable: true,
+                    //     exclusive: false,           //队列是否是排他的
+                    //     autoDelete: false,
+                    //     arguments: queueArgs);
+                    //}
+                    //else
+                    //{
+                       
+                    
+                        model.QueueDeclare(queue: queuename,
+                          durable: true,
+                          exclusive: false,           //队列是否是排他的
+                          autoDelete: false,
+                          arguments: null);
+                    //}
+
+                    //3队列和交换机绑定
+                    model.QueueBind(queue: queuename,
+                                 exchange: exchangeName,
+                                 routingKey: "",
+                                 arguments: null);   //
+
+                }
            
             //4发送消息
             while(true)
@@ -119,6 +171,6 @@ namespace OrderPublisher
             }
         }
 
-      
+     
     }
 }
