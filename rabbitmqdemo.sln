@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpcClient", "RpcClient\RpcC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpcServer", "RpcServer\RpcServer.csproj", "{A5841A09-E04F-4998-97C7-68638AEA7413}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DelayedMessagePlugin", "DelayedMessagePlugin", "{89FA2958-8E14-4B77-9746-B10FD32D68C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelayedMessagePublisher", "DelayedMessagePublisher\DelayedMessagePublisher.csproj", "{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,10 @@ Global
 		{A5841A09-E04F-4998-97C7-68638AEA7413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5841A09-E04F-4998-97C7-68638AEA7413}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5841A09-E04F-4998-97C7-68638AEA7413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +81,6 @@ Global
 		{732BC24C-3245-4F06-AC99-0AAC52216FC4} = {5FF29034-062E-4B93-B3C3-7A9978208B6A}
 		{1BB4DCE1-FE10-4B93-A596-931B642120F2} = {DDF6B121-C433-4FFA-8D36-64B80E380E41}
 		{A5841A09-E04F-4998-97C7-68638AEA7413} = {DDF6B121-C433-4FFA-8D36-64B80E380E41}
+		{DBE40283-DC17-4E7E-BDC6-6BE9B31C6A77} = {89FA2958-8E14-4B77-9746-B10FD32D68C0}
 	EndGlobalSection
 EndGlobal
