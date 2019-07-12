@@ -21,6 +21,7 @@ namespace OrderPublisher
 
             ConnectionFactory connectionFactory = new ConnectionFactory();
             connectionFactory.HostName = "10.2.56.245";
+          
             connectionFactory.Port = 5672; //默认端口
             connectionFactory.VirtualHost = "/";
             connectionFactory.UserName = "hw";
@@ -154,7 +155,7 @@ namespace OrderPublisher
                     mandatory: false, 
                     basicProperties: baseProperties,
                     body: messageBodyBytes);
-                bool confim= model.WaitForConfirms();  //同步
+                bool confim= model.WaitForConfirms(TimeSpan.FromSeconds(10));  //同步
                 Console.WriteLine("消息投递到HOST:" + confim);
             }
 
